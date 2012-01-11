@@ -45,26 +45,27 @@ $dirConfig = Application_Model_DirectoryConfigMapper::load(); /* @var $dirConfig
 
 foreach (glob($dirConfig->getQueueIn().'/*') as $inFile) {
 
-	if (DICOM_Util::isFileLocked($inFile)) {
+	if (DICOM_Util::isFileLocked($inFile)) {          
 		continue;
 	}
-    $outFile = $dirConfig->getQueueCompressed().'/'.basename($inFile);
+	$outFile = $dirConfig->getQueueCompressed().'/'.basename($inFile);
 
-    try {
-        $siteCode = $sendConfig->getSiteCode();
-        if (strlen($siteCode)) {
-            DICOM_Util::insertTag($inFile, DICOM_Util::Tag_NovaradSiteCode, $siteCode);
-        }
+	try {
+		$siteCode = $sendConfig->getSiteCode();
+		if (strlen($siteCode)) {
+			DICOM_Util::insertTag($inFile, DICOM_Util::Tag_NovaradSiteCode, $siteCode);
+		}
 
-        if ($sendConfig->getImageCompressionEnabled()) {
-            DICOM_Util::toJPEG2000($inFile, $outFile);
-        } else {
-            rename($inFile, $outFile);
-        }
-    } catch (Exception $e) {
+		if ($sendConfig->getImageCompressionEnabled()) {
+			DICOM_Util::toJPEG2000($inFile, $outFile);
+		} else {
+			rename($inFile, $outFile);
+		}
+	} 
+	catch (Exception $e) {	
 		// get image files that failed to send, move them into "failed" folder
-        // if it failed at this point, it's corruption or something unrecoverable like that
-        $failedFile = $dirConfig->getQueueFailed().'/'.basename($inFile);		
-        rename($inFile, $failedFile);
-    }
+		// if it failed at this point, it's corruption or something unrecoverable like that
+		$failedFile = $dirConfig->getQueueFailed().'/'.basename($inFile);		
+		rename($inFile, $failedFile);
+	}
 }
