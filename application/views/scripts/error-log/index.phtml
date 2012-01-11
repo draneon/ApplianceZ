@@ -1,0 +1,7 @@
+<h2>Error Log</h2>
+<div><a href="<?=$this->url(array('action'=>'clear'))?>">[Clear error log]</a></div>
+<?php if (empty($this->errorLog)) : ?>
+    <p>The error log is empty.</p>
+<?php else : ?>
+    <pre><?=$this->errorLog?></pre>
+<?php endif; ?>

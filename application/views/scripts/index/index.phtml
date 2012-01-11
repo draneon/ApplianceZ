@@ -1,0 +1,12 @@
+<h2>Store Server</h2>
+<div id="pingResult"><span class="message"></span> <a href="javascript:pingStoreServer();" id="retryPingLink">Retry</a></div>
+
+<h2>Queue</h2>
+<div id="queueSummary">
+    <div>
+        <span>Queued images: <?php echo Misc_Util::pluralize($this->queue->getFileCount(), 'file'),', ',Misc_Util::getHumanReadableBytes($this->queue->getTotalFileSize())?></span>
+    </div>
+    <div>
+        <span>Failed images: <?php echo Misc_Util::pluralize($this->failed->getFileCount(), 'file'),', ',Misc_Util::getHumanReadableBytes($this->failed->getTotalFileSize())?></span>
+    </div>
+</div>

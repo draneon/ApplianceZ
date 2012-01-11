@@ -1,0 +1,28 @@
+<h2>Queue</h2>
+
+<?php
+$allQueuesSize = 0;
+foreach ($this->queues as $queueTitle => $queue) :
+    $fileCount = $queue->getFileCount();
+    $queueSize = $queue->getTotalFileSize();
+    $allQueuesSize += $queueSize;
+    ?><div class="queueGroup">
+        <h3><?php echo $queueTitle,': ',Misc_Util::pluralize($fileCount, 'file'),', ',Misc_Util::getHumanReadableBytes($queueSize)?></h3>
+        <table class="queueTable">
+            <thead>
+                <tr><th class="fileName">File name</th><th class="fileDate">Date</th><th class="fileSize">File size</th></tr>
+            </thead>
+            <tbody>
+                <?php foreach ($queue->getFiles() as $file) { /* @var $file Application_Model_QueueFile */
+                    ?><tr>
+                        <td class="fileName"><?=$file->getFileName()?></td>
+                        <td class="fileDate"><?=strftime('%c', $file->getDate())?></td>
+                        <td class="fileSize"><?=Misc_Util::getHumanReadableBytes($file->getSize())?></td>
+                    </tr><?php
+                }?>
+            </tbody>
+        </table>
+    </div>
+<?php endforeach; ?>
+
+<p>Total queue size: <?=Misc_Util::getHumanReadableBytes($allQueuesSize)?></p>

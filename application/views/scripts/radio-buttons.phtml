@@ -1,0 +1,4 @@
+<span class="radioLabel"><?=$this->title?></span>
+<?php foreach ($this->items as $item) {
+    ?><label><span class="title"><?=$item['title']?></span><input type="radio" name="<?=$this->name?>" value="<?=$item['value']?>" <?php if ($this->chosen == $item['value']) echo 'checked="checked"'; ?>/></label><?php
+}

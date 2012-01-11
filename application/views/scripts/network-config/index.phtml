@@ -1,0 +1,35 @@
+<form method="POST" action="<?=$this->url(array('action' => 'save'))?>">
+
+<h2>Networking Configuration</h2>
+<?php echo $this->partial('radio-buttons.phtml', array('title' => 'IP Address Configuration Mode', 'name' => 'ipMode',
+    'chosen' => $this->netConfig->getIpMode(),
+    'items' => array(
+        array('title' => 'DHCP', 'value' => Application_Model_NetworkConfig::IpMode_Dhcp),
+        array('title' => 'Manual', 'value' => Application_Model_NetworkConfig::IpMode_Static)
+    )
+));
+?><div id="manualIpConfig">
+<?php
+echo $this->partial('text-input.phtml', array('title' => 'IP Address', 'name' => 'ipAddress', 'value' => $this->netConfig->getIpAddress()));
+echo $this->partial('text-input.phtml', array('title' => 'Subnet Mask', 'name' => 'netmask', 'value' => $this->netConfig->getNetmask()));
+echo $this->partial('text-input.phtml', array('title' => 'Gateway', 'name' => 'gateway', 'value' => $this->netConfig->getGateway()));
+
+$dns = $this->netConfig->getNameservers();
+echo $this->partial('text-input.phtml', array('title' => 'DNS Server 1', 'name' => 'nameservers[]', 'value' => isset($dns[0]) ? $dns[0] : ''));
+echo $this->partial('text-input.phtml', array('title' => 'DNS Server 2', 'name' => 'nameservers[]', 'value' => isset($dns[1]) ? $dns[1] : ''));
+?>
+</div>
+
+<h2>DICOM SCP Configuration</h2>
+<?php
+echo $this->partial('text-input.phtml', array('title' => 'Port to receive images on', 'name' => 'scpPort', 'value' => $this->netConfig->getScpPort()));
+?>
+
+<h2>System Hostname</h2>
+<?php
+echo $this->partial('text-input.phtml', array('title' => 'Hostname', 'name' => 'hostname', 'value' => $this->netConfig->getHostname()));
+
+echo $this->partial('save-button.phtml');
+?>
+
+</form>

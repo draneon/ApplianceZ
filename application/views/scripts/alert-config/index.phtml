@@ -1,0 +1,12 @@
+<form method="POST" action="<?=$this->url(array('action' => 'save'))?>">
+
+<h2>Alert Emails</h2>
+
+<?php
+echo $this->partial('text-input.phtml', array('title' => 'Email address', 'name' => 'emailAddress', 'value' => $this->alertConfig->getEmailAddress()));
+echo $this->partial('text-input.phtml', array('title' => 'SMTP host', 'name' => 'smtpHost', 'value' => $this->alertConfig->getSMTPHost()));
+
+echo $this->partial('save-button.phtml');
+?>
+
+</form>

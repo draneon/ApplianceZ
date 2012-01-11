@@ -1,0 +1,15 @@
+<form method="POST" action="<?=$this->url(array('action' => 'save'))?>">
+
+<h2>Image Uploading</h2>
+
+<?php
+echo $this->partial('text-input.phtml', array('title' => 'Store host', 'name' => 'storeHost', 'value' => $this->sendConfig->getStoreHost()));
+echo $this->partial('text-input.phtml', array('title' => 'Store port', 'name' => 'storePort', 'value' => $this->sendConfig->getStorePort()));
+echo $this->partial('text-input.phtml', array('title' => 'AE Title', 'name' => 'callingAeTitle', 'value' => $this->sendConfig->getCallingAeTitle()));
+echo $this->partial('text-input.phtml', array('title' => 'Site Code', 'name' => 'siteCode', 'value' => $this->sendConfig->getSiteCode()));
+echo $this->partial('checkbox.phtml', array('title' => 'Compression Enabled', 'name' => 'imageCompressionEnabled', 'checked' => $this->sendConfig->getImageCompressionEnabled()));
+
+echo $this->partial('save-button.phtml');
+?>
+
+</form>
