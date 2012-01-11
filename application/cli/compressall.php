@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+// compressall.php
 
 #start-stop-daemon requires signal handlers to be set, and declaring signal handlers requires ticks to be set.
 declare(ticks=1);
@@ -43,6 +44,10 @@ $sendConfig = Application_Model_SendConfigMapper::load(); /* @var $sendConfig Ap
 $dirConfig = Application_Model_DirectoryConfigMapper::load(); /* @var $dirConfig Application_Model_DirectoryConfig */
 
 foreach (glob($dirConfig->getQueueIn().'/*') as $inFile) {
+
+	if (DICOM_Util::isFileLocked($inFile)) {
+		continue;
+	}
     $outFile = $dirConfig->getQueueCompressed().'/'.basename($inFile);
 
     try {
@@ -56,10 +61,10 @@ foreach (glob($dirConfig->getQueueIn().'/*') as $inFile) {
         } else {
             rename($inFile, $outFile);
         }
-    } catch (exception $e) {
+    } catch (Exception $e) {
+		// get image files that failed to send, move them into "failed" folder
         // if it failed at this point, it's corruption or something unrecoverable like that
-        $failedFile = $dirConfig->getQueueFailed().'/'.basename($inFile);
+        $failedFile = $dirConfig->getQueueFailed().'/'.basename($inFile);		
         rename($inFile, $failedFile);
     }
 }
-

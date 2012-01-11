@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+// sendall.php
 
 #start-stop-daemon requires signal handlers to be set, and declaring signal handlers requires ticks to be set.
 declare(ticks=1);
