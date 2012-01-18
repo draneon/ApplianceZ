@@ -64,10 +64,10 @@ class DICOM_Util {
 		$outTrimmed = array();
 
 		for ( $i=0; $i < count($output); $i++) {
-				$temp = trim($output[$i]);
-				if ($temp) {
-						$outTrimmed[] = date("[m-d-Y H:i:s] ", time()).$temp;
-				}
+			$temp = trim($output[$i]);
+			if ($temp) {
+				$outTrimmed[] = date("[m-d-Y H:i:s] ", time()).$temp;
+			}
 		}
 		$output = implode("\n", $outTrimmed)."\n";
 		//$output = implode("\n", $output) . "\n";
@@ -94,21 +94,21 @@ class DICOM_Util {
 
 		// find access mode(read, write) and lock status
 		if ( $shellOutput !== "" ) {
-				// output is in this format for each process
-				// p'processID' newline  a'accessmode' newline l'lockstatus' 
-				$results = explode(PHP_EOL, $shellOutput);			
+			// output is in this format for each process
+			// p'processID' newline  a'accessmode' newline l'lockstatus' 
+			$results = explode(PHP_EOL, $shellOutput);			
 
-				foreach ($results as $field){			
-						$field = trim($field);
-						$length = strlen($field);
-						if ( $field !== "" && $length > 1 ){
-								if ( $field[0] === "l" && $field[1] !== " " ) {
-										// character following 'l' is space means file is not locked
-										$islocked = true;
-										break;
-								}
-						}
-				}		
+			foreach ($results as $field){			
+				$field = trim($field);
+				$length = strlen($field);
+				if ( $field !== "" && $length > 1 ){
+					if ( $field[0] === "l" && $field[1] !== " " ) {
+						// character following 'l' is space means file is not locked
+						$islocked = true;
+						break;
+					}
+				}
+			}		
 		}		
 		return $islocked;
 	}
@@ -117,7 +117,7 @@ class DICOM_Util {
 	public static function getCompressedFiles() {
 	
 		$dirConfig = Application_Model_DirectoryConfigMapper::load();
-		$readyFiles  = array()	;
+		$readyFiles  = array();
 
 		// go thru each file in 'compressed' folder and find out if it is being accessed by other processes
 		// a file may be in the process of compression
@@ -126,6 +126,7 @@ class DICOM_Util {
 			if (DICOM_Util::isFileLocked($zippedFile)) {
 				continue;
 			}			
+			// file is not locked, add to list of files to be compressed
 			$readyFiles[] = $zippedFile;			
 		}
 		
@@ -145,8 +146,10 @@ class DICOM_Util {
 			foreach (glob($dir . '/*') as $zFile) {
 
 				if (DICOM_Util::isFileLocked($zFile)) {
+					// skip locked file
 					continue;
 				}						
+				// append each image filename to the command
 				$cmd = $cmd . ' ' . $zFile;
 				$valid = true;
 			}
