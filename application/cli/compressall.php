@@ -48,6 +48,7 @@ foreach (glob($dirConfig->getQueueIn().'/*') as $inFile) {
 	if (DICOM_Util::isFileLocked($inFile)) {          
 		continue;
 	}
+	// create compressed filename
 	$outFile = $dirConfig->getQueueCompressed().'/'.basename($inFile);
 
 	try {
